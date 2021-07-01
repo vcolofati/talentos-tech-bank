@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        exercicio4();
+        exercicio5();
     }
 
     public static void exercicio1() {
@@ -175,6 +175,10 @@ public class Main {
                 System.out.printf("A multiplicação dos números é: %.2f", value1 * value2);
                 break;
             case '/':
+                if (value2 == 0) {
+                    System.out.println("Não é possível dividir por zero");
+                    break;
+                }
                 System.out.printf("A divisão dos números é: %.2f", value1 / value2);
                 break;
             default:
