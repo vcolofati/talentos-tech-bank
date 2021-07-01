@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        exercicio5();
+        exercicio6();
     }
 
     public static void exercicio1() {
@@ -126,7 +126,7 @@ public class Main {
 
         System.out.println("O maior número é " + greatest);
         System.out.println("O menor número é " + smallest);
-        System.out.println("A média é " + acum/length);
+        System.out.println("A média é " + acum / length);
         sc.close();
     }
 
@@ -217,17 +217,13 @@ public class Main {
         }
         String movePlayer2 = sc.next();
 
-        if (movePlayer1.equals("pa") && movePlayer2.equals("pe")) {
+        if (movePlayer1.equals("pa") && movePlayer2.equals("pe")
+                || movePlayer1.equals("pe") && movePlayer2.equals("t")
+                || movePlayer1.equals("t") && movePlayer2.equals("pa")) {
             System.out.println("Vitória do jogador 1");
-        } else if (movePlayer1.equals("pa") && movePlayer2.equals("t")) {
-            System.out.println("Vitória do jogador 2");
-        } else if (movePlayer1.equals("pe") && movePlayer2.equals("pa")) {
-            System.out.println("Vitória do jogador 2");
-        } else if (movePlayer1.equals("pe") && movePlayer2.equals("t")) {
-            System.out.println("Vitória do jogador 1");
-        } else if (movePlayer1.equals("t") && movePlayer2.equals("pa")) {
-            System.out.println("Vitória do jogador 1");
-        } else if (movePlayer1.equals("t") && movePlayer2.equals("pe")) {
+        } else if (movePlayer1.equals("pa") && movePlayer2.equals("t")
+                || movePlayer1.equals("pe") && movePlayer2.equals("pa")
+                || movePlayer1.equals("t") && movePlayer2.equals("pe")) {
             System.out.println("Vitória do jogador 2");
         } else {
             System.out.println("Empate");
