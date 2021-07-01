@@ -4,7 +4,7 @@ import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        exercicio5();
+        exercicio4();
     }
 
     public static void exercicio1() {
@@ -97,9 +97,10 @@ public class Main {
         //Calcule a média dos números lidos
 
         Scanner sc = new Scanner(System.in);
-        int current, greatest = 0, smallest = 0;
+        int current, greatest = 0, smallest = 0, length = 10;
+        double acum = 0.0;
 
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < length; i++) {
             System.out.printf("Digite o %dº número: ", i + 1);
             if (!sc.hasNextInt()) {
                 System.out.println("Erro, só é possível digitar números inteiros!");
@@ -110,18 +111,22 @@ public class Main {
             if (i == 0) {
                 greatest = current;
                 smallest = current;
+                acum += current;
                 continue;
             }
             if (current > greatest) {
                 greatest = current;
+                acum += current;
             }
             if (current < smallest) {
                 smallest = current;
+                acum += current;
             }
         }
 
         System.out.println("O maior número é " + greatest);
         System.out.println("O menor número é " + smallest);
+        System.out.println("A média é " + acum/length);
         sc.close();
     }
 
