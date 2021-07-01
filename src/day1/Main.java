@@ -15,11 +15,11 @@ public class Main {
 
         short y = 99;
         short z = 11;
-        System.out.printf("y: %d, z: %d%n",y,z);
+        System.out.printf("y: %d, z: %d%n", y, z);
         short temp = y;
         y = z;
         z = temp;
-        System.out.printf("y: %d, z: %d",y,z);
+        System.out.printf("y: %d, z: %d", y, z);
     }
 
     public static void exercicio2() {
@@ -51,14 +51,28 @@ public class Main {
         // que cada um representa em relação ao total de eleitores.
 
         Scanner sc = new Scanner(System.in);
-        System.out.printf("Número total de eleitores no município: ");
-        double totalVoters = sc.nextInt();
+
         System.out.printf("Número de votos brancos: ");
+        if (!sc.hasNextInt()) {
+            System.out.println("Você não digitou um valor válido, encerrando o programa...");
+            System.exit(1);
+        }
         double blankVotes = sc.nextInt();
         System.out.printf("Número de votos nulos: ");
+        if (!sc.hasNextInt()) {
+            System.out.println("Você não digitou um valor válido, encerrando o programa...");
+            System.exit(1);
+        }
         double spoiltVotes = sc.nextInt();
         System.out.printf("Número de votos válidos: ");
+        if (!sc.hasNextInt()) {
+            System.out.println("Você não digitou um valor válido, encerrando o programa...");
+            System.exit(1);
+        }
         double validVotes = sc.nextInt();
+
+        double totalVoters = blankVotes + spoiltVotes + validVotes;
+        System.out.printf("Número total de eleitores no município: %.0f%n", totalVoters);
 
         System.out.printf("Votos brancos: %.2f%%%n", blankVotes / totalVoters * 100.0);
         System.out.printf("Votos nulos: %.2f%%%n", spoiltVotes / totalVoters * 100.0);
