@@ -1,6 +1,4 @@
-package day5;
-
-import com.sun.org.apache.xerces.internal.xs.ItemPSVI;
+package week1.day5;
 
 import java.util.Arrays;
 

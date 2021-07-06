@@ -1,4 +1,4 @@
-package day1;
+package week1.day1;
 
 import java.util.Scanner;
 
@@ -25,7 +25,7 @@ public class Exercicios {
     public static void exercicio2() {
         // 2. Escreva um algoritmo para ler um valor (do teclado) e escrever (na tela) o seu antecessor.
         // TODO tratar erros de input.
-        System.out.printf("Digite um número: ");
+        System.out.print("Digite um número: ");
         Scanner sc = new Scanner(System.in);
         System.out.printf("O antecessor é: %d%n", sc.nextInt() - 1);
         sc.close();
@@ -36,9 +36,9 @@ public class Exercicios {
         // calcular e escrever a área do retângulo.
 
         Scanner sc = new Scanner(System.in);
-        System.out.printf("Digite a altura do retângulo (m): ");
+        System.out.print("Digite a altura do retângulo (m): ");
         double width = sc.nextDouble();
-        System.out.printf("Digite a largura do retângulo (m): ");
+        System.out.print("Digite a largura do retângulo (m): ");
         double length = sc.nextDouble();
         double area = width * length;
         System.out.println("Area do retângulo: " + area + " m²");
@@ -52,19 +52,19 @@ public class Exercicios {
 
         Scanner sc = new Scanner(System.in);
 
-        System.out.printf("Número de votos brancos: ");
+        System.out.print("Número de votos brancos: ");
         if (!sc.hasNextInt()) {
             System.out.println("Você não digitou um valor válido, encerrando o programa...");
             System.exit(1);
         }
         double blankVotes = sc.nextInt();
-        System.out.printf("Número de votos nulos: ");
+        System.out.print("Número de votos nulos: ");
         if (!sc.hasNextInt()) {
             System.out.println("Você não digitou um valor válido, encerrando o programa...");
             System.exit(1);
         }
         double spoiltVotes = sc.nextInt();
-        System.out.printf("Número de votos válidos: ");
+        System.out.print("Número de votos válidos: ");
         if (!sc.hasNextInt()) {
             System.out.println("Você não digitou um valor válido, encerrando o programa...");
             System.exit(1);

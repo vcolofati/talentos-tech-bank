@@ -1,4 +1,4 @@
-package day0;
+package week1.day0;
 
 public class Main {
 
