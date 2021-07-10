@@ -10,13 +10,10 @@ public class Pessoa {
     private LocalDate dataNascimento;
     private Float altura;
 
-    Pessoa() {
-    }
-
-    Pessoa(String nome, LocalDate dataNascimento, Float altura) {
-        this.nome = nome;
-        this.dataNascimento = dataNascimento;
-        this.altura = altura;
+    public Pessoa(String nome, LocalDate dataNascimento, Float altura) {
+        this.setNome(nome);
+        this.setDataNascimento(dataNascimento);
+        this.setAltura(altura);
     }
 
     public String getNome() {
@@ -43,15 +40,15 @@ public class Pessoa {
         this.altura = altura;
     }
 
-    Integer getIdade() {
+    public Integer getIdade() {
         return Period.between(this.dataNascimento, LocalDate.now()).getYears();
     }
 
     @Override
-    final public String toString() {
-        return "Pessoa{" + "nome='" + nome + '\'' +
-                ", dataNascimento=" + dataNascimento +
-                ", altura=" + altura +
+    public final String toString() {
+        return "Pessoa{" + "nome='" + this.getNome() + '\'' +
+                ", dataNascimento=" + this.getDataNascimento() +
+                ", altura=" + this.getAltura() +
                 '}';
     }
 
@@ -60,11 +57,11 @@ public class Pessoa {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Pessoa pessoa = (Pessoa) o;
-        return Objects.equals(nome, pessoa.nome) && Objects.equals(dataNascimento, pessoa.dataNascimento) && Objects.equals(altura, pessoa.altura);
+        return Objects.equals(getNome(), pessoa.getNome()) && Objects.equals(getDataNascimento(), pessoa.getDataNascimento());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(nome, dataNascimento, altura);
+        return Objects.hash(getNome(), getDataNascimento());
     }
 }

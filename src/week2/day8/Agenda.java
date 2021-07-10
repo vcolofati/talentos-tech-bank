@@ -3,10 +3,9 @@ package week2.day8;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Agenda {
-    private List<Pessoa> contatos = new ArrayList<>();
+    private final List<Pessoa> contatos = new ArrayList<>();
 
     void armazenaPessoa(String nome, LocalDate dataNascimento, float altura) {
         contatos.add(new Pessoa(nome, dataNascimento, altura));

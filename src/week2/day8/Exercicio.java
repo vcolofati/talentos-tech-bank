@@ -43,7 +43,7 @@ public class Exercicio {
         myAgenda.imprimeAgenda();
         System.out.println();
         // retorna índice do Paulo Roberto
-        System.out.println(myAgenda.buscaPessoa("Paulo Roberto"));
+        myAgenda.imprimePessoa(myAgenda.buscaPessoa("Paulo Roberto"));
 
     }
 
