@@ -17,7 +17,7 @@ public class Bank {
     public Account getAccount(String name) {
         // tratar null pointer Exception
         for (int i = 0; i < this.accounts.size(); i++) {
-            if (this.accounts.get(i).getClientName().equals(name)) {
+            if (this.accounts.get(i).getClient().getName().equals(name)) {
                 return this.accounts.get(i);
             }
         }

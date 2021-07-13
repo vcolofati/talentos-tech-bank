@@ -1,9 +1,6 @@
 package week3.project1;
 
-import week3.project1.models.Account;
-import week3.project1.models.Bank;
-import week3.project1.models.CheckingAccount;
-import week3.project1.models.SavingsAccount;
+import week3.project1.models.*;
 
 import java.util.Locale;
 import java.util.Scanner;
@@ -46,6 +43,10 @@ public class Program {
                     System.out.print("Digite o nome do cliente: ");
                     sc.nextLine();
                     String clientName = sc.nextLine().trim();
+                    System.out.print("Digite o cpf do cliente: ");
+                    String cpf = sc.nextLine().trim();
+                    System.out.print("Digite a profissão do cliente: ");
+                    String occupation = sc.nextLine().trim();
                     System.out.print("Conta corrente (CC) ou Conta Poupança (CP)? ");
                     String accountType;
                     if (sc.hasNext("C[C|P]")) {
@@ -58,9 +59,9 @@ public class Program {
                     System.out.print("Digite o depósito inicial: ");
                     double initialDeposit = sc.nextDouble();
                     if (accountType.equals("CC")) {
-                        bank.addAccount(new CheckingAccount(clientName, initialDeposit));
+                        bank.addAccount(new CheckingAccount(new Client(clientName, cpf, occupation), initialDeposit));
                     } else {
-                        bank.addAccount(new SavingsAccount(clientName, initialDeposit));
+                        bank.addAccount(new SavingsAccount(new Client(clientName, cpf, occupation), initialDeposit));
                     }
                     break;
                 case 2:
@@ -86,7 +87,7 @@ public class Program {
             return;
         }
         Account account = bank.getAccount(clientName);
-        System.out.printf("Bem vindo(a) %s", account.getClientName());
+        System.out.printf("Bem vindo(a) %s", account.getClient().getName());
         System.out.println();
         int resp;
         do {
@@ -94,8 +95,9 @@ public class Program {
             System.out.println("Para listar seu extrato, digite 2");
             System.out.println("Para realizar saque, digite 3");
             System.out.println("Para realizar depósito, digite 4");
-            System.out.println("Para adicionar limite de cheque especial, digite 5");
-            System.out.println("Para encerrar sua conta, digite 6");
+            System.out.println("Para efetuar uma transferência, digite 5");
+            System.out.println("Para adicionar limite de cheque especial, digite 6");
+            System.out.println("Para encerrar sua conta, digite 7");
             System.out.println("Para voltar, digite 0");
             resp = sc.nextInt();
             switch (resp) {
@@ -109,7 +111,11 @@ public class Program {
                     //realizar saque
                     System.out.println("Quanto deseja sacar?");
                     System.out.print("Valor: ");
-                    account.withdraw(sc.nextDouble());
+                    try {
+                        account.withdraw(sc.nextDouble());
+                    } catch (Exception e) {
+                        System.out.println(e.getMessage());
+                    }
                     System.out.printf("Seu saldo atualizado é %.2f%n", account.getBalance());
                     break;
                 case 4:
@@ -120,15 +126,33 @@ public class Program {
                     System.out.printf("Seu saldo atualizado é %.2f%n", account.getBalance());
                     break;
                 case 5:
-                    //adicionar limite cheque especial
+                    //transferir
+                    System.out.print("Digite o cpf do destinatário: ");
+                    String cpf = sc.next();
+                    System.out.print("Digite o nome do destinatário: ");
+                    String name = sc.next();
+                    Account destination = bank.getAccount(name);
+                    System.out.println("Digite o valor para transferir:");
+
+                    // checar se existe destinatário
+                    // se existir faz a transferencia senão informa que não existe pessoa
+                    try {
+                        account.transfer(sc.nextDouble(), destination);
+                    } catch (Exception e) {
+
+                    }
+                    break;
                 case 6:
+                    //adicionar limite cheque especial
+                case 7:
                     System.out.println("Tem certeza que deseja encerrar a conta [s/N]?");
                     if (sc.next().charAt(0) == 's') {
                         bank.deleteAccount(clientName);
+                        System.out.println("Conta encerrada com sucesso");
+                        resp = 0;
+                    } else {
+                        System.out.println("Resposta inválida");
                     }
-                    System.out.println("Conta encerrada com sucesso");
-                    resp = 0;
-
                     break;
                 default:
                     System.out.println("Saindo");

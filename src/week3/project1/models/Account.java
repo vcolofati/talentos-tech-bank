@@ -4,23 +4,23 @@ import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Account {
-    private String clientName;
+    private Client client;
     private Double balance = 0.0;
     private UUID uuid;
 
-    public Account(String clientName, Double amount) {
-        setClientName(clientName);
+    public Account(Client client, Double amount) {
+        setClient(client);
         deposit(amount);
         uuid = UUID.randomUUID();
     }
 
-    public String getClientName() {
-        return clientName;
+    public Client getClient() {
+        return client;
     }
 
-    public void setClientName(String clientName) {
+    public void setClient(Client client) {
 
-        this.clientName = clientName;
+        this.client = client;
     }
 
     public Double getBalance() {
@@ -31,14 +31,26 @@ public abstract class Account {
         this.balance+= amount;
     }
 
-    public void withdraw(Double amount) {
+    public void withdraw(Double amount) throws Exception {
+        if (this.getBalance() < amount) {
+            throw new Exception("Seu saldo não é suficiente");
+        }
         this.balance-= amount;
+    }
+
+    public void transfer(Double amount, Account destination) throws Exception {
+        if (this.getBalance() < amount) {
+            throw new Exception("Saldo insuficiente");
+        }
+        // se a conta destino não existe tratar
+        this.balance -= amount;
+        destination.deposit(amount);
     }
 
     @Override
     public String toString() {
         return "Account{" +
-                "clientName='" + clientName + '\'' +
+                "clientName='" + client.getName() + '\'' +
                 ", balance=" + balance +
                 ", uuid=" + uuid +
                 '}';
