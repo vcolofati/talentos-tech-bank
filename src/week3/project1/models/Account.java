@@ -3,7 +3,7 @@ package week3.project1.models;
 import java.util.Objects;
 import java.util.UUID;
 
-public class Account {
+public abstract class Account {
     private String clientName;
     private Double balance = 0.0;
     private UUID uuid;

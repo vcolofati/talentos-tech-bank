@@ -2,12 +2,16 @@ package week3.project1;
 
 import week3.project1.models.Account;
 import week3.project1.models.Bank;
+import week3.project1.models.CheckingAccount;
+import week3.project1.models.SavingsAccount;
 
+import java.util.Locale;
 import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
         // Criar conta - perguntar nome cliente, saldo inicial, tipo de conta e id aleatório de 4 digitos
+        Locale.setDefault(new Locale("pt", "BR"));
         Bank bank = new Bank();
         mainMenu(bank);
 
@@ -19,7 +23,7 @@ public class Program {
         // * Adicionar limite de cheque especial ( Deve pedir a senha do gerente)
 
         //Encerrar conta (Ao encerrar a conta, o usuário deve realizar o saque de
-        // todo o valor restante na conta e não pode estar devendo nada no cheque especial).
+        //todo o valor restante na conta e não pode estar devendo nada no cheque especial).
     }
 
     public static void mainMenu(Bank bank) {
@@ -31,15 +35,33 @@ public class Program {
             System.out.println("Para acessar uma conta digite 2");
             System.out.println("Para sair, digite 3");
             System.out.print("Opção: ");
+            if (!sc.hasNextInt()) {
+                System.out.println("Comando inválido");
+                sc.next();
+                continue;
+            }
             int resp = sc.nextInt();
             switch (resp) {
                 case 1:
                     System.out.print("Digite o nome do cliente: ");
                     sc.nextLine();
                     String clientName = sc.nextLine().trim();
+                    System.out.print("Conta corrente (CC) ou Conta Poupança (CP)? ");
+                    String accountType;
+                    if (sc.hasNext("C[C|P]")) {
+                        accountType = sc.next();
+                    } else {
+                        System.out.println("Erro comando inválido");
+                        sc.next();
+                        continue;
+                    }
                     System.out.print("Digite o depósito inicial: ");
                     double initialDeposit = sc.nextDouble();
-                    bank.addAccount(new Account(clientName, initialDeposit));
+                    if (accountType.equals("CC")) {
+                        bank.addAccount(new CheckingAccount(clientName, initialDeposit));
+                    } else {
+                        bank.addAccount(new SavingsAccount(clientName, initialDeposit));
+                    }
                     break;
                 case 2:
                     // Acessar conta
@@ -49,6 +71,7 @@ public class Program {
                     isRunning = false;
                     break;
                 default:
+                    System.out.println("Comando inválido");
             }
         } while (isRunning);
         sc.close();
@@ -58,6 +81,10 @@ public class Program {
         Scanner sc = new Scanner(System.in);
         System.out.print("Digite seu nome completo: ");
         String clientName = sc.nextLine().trim();
+        if (bank.getAccount(clientName) == null) {
+            System.out.println("Conta não existente");
+            return;
+        }
         Account account = bank.getAccount(clientName);
         System.out.printf("Bem vindo(a) %s", account.getClientName());
         System.out.println();
@@ -74,7 +101,7 @@ public class Program {
             switch (resp) {
                 case 1:
                     // saldo
-                    System.out.printf("Seu saldo é %.2f%n", account.getBalance());
+                    System.out.printf("Seu saldo é R$ %.2f%n", account.getBalance());
                     break;
                 case 2:
                     //listar extrato
@@ -99,7 +126,10 @@ public class Program {
                     if (sc.next().charAt(0) == 's') {
                         bank.deleteAccount(clientName);
                     }
+                    System.out.println("Conta encerrada com sucesso");
                     resp = 0;
+
+                    break;
                 default:
                     System.out.println("Saindo");
                     break;

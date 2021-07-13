@@ -16,9 +16,6 @@ public class Bank {
 
     public Account getAccount(String name) {
         // tratar null pointer Exception
-        if (name == null) {
-            throw new RuntimeException("Digite uma conta");
-        }
         for (int i = 0; i < this.accounts.size(); i++) {
             if (this.accounts.get(i).getClientName().equals(name)) {
                 return this.accounts.get(i);
@@ -28,6 +25,10 @@ public class Bank {
     }
 
     public void deleteAccount(String name) {
+        if (getAccount(name).getBalance() > 0) {
+            System.out.println("Você deve sacar todo dinheiro antes de encerrar a conta");
+            return;
+        }
         Account account = getAccount(name);
         accounts.remove(account);
     }
