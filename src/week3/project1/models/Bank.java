@@ -34,7 +34,7 @@ public class Bank {
             return 1;
         } else if (getAccount(name).getBalance() < 0) {
             return -1;
-        } else if(getAccount(name).getBalance() == 0) {
+        } else if (getAccount(name).getBalance() == 0) {
             Account account = getAccount(name);
             accounts.remove(account);
         }

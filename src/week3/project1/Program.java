@@ -61,7 +61,7 @@ public class Program {
                     Client client = new Client(clientName, cpf, occupation);
                     if (accountType.equals("CC")) {
                         try {
-                            bank.addAccount(new CheckingAccount(client, initialDeposit, 300.00));
+                            bank.addAccount(new CheckingAccount(client, initialDeposit, 300.0));
 
                         } catch (Exception e) {
                             System.out.println(e.getMessage());
@@ -117,7 +117,8 @@ public class Program {
                     System.out.printf("Seu saldo é R$ %.2f%n", account.getBalance());
                     break;
                 case 2:
-                    //listar extrato
+                    account.showStatement();
+                    break;
                 case 3:
                     //realizar saque
                     System.out.println("Quanto deseja sacar?");

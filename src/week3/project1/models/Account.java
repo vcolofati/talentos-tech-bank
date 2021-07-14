@@ -1,14 +1,14 @@
 package week3.project1.models;
 
-import com.sun.org.apache.xpath.internal.functions.WrongNumberArgsException;
-
 import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Account {
     private Client client;
     protected Double balance = 0.0;
-    private UUID uuid;
+    private final UUID uuid;
+    protected Statement statement = new Statement();
+
 
     public Account(Client client, Double amount) throws Exception {
         setClient(client);
@@ -21,7 +21,6 @@ public abstract class Account {
     }
 
     public void setClient(Client client) {
-
         this.client = client;
     }
 
@@ -34,6 +33,8 @@ public abstract class Account {
             throw new Exception("Valor deve ser maior que zero");
         }
         this.balance += amount;
+        //falar pro extrato para guardar transação
+        this.statement.addTransaction(amount);
     }
 
     public void withdraw(Double amount) throws Exception {
@@ -44,6 +45,12 @@ public abstract class Account {
             throw new Exception("Seu saldo não é suficiente");
         }
         this.balance -= amount;
+        //falar pro extrato para guardar transação
+        this.statement.addTransaction(-amount);
+    }
+
+    public void showStatement() {
+        this.statement.showTransactions();
     }
 
     public void transfer(Double amount, Account destination) throws Exception {
@@ -56,6 +63,8 @@ public abstract class Account {
         // se a conta destino não existe tratar
         this.balance -= amount;
         destination.deposit(amount);
+        //falar pro extrato para guardar transação
+        this.statement.addTransaction(-amount);
     }
 
     @Override
