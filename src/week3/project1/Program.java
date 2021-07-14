@@ -143,9 +143,9 @@ public class Program {
                     break;
                 case 5:
                     //transferir
-                    //TODO validar cpf do usuário, não está validando
-                    System.out.print("Digite o cpf do destinatário: ");
-                    String cpf = sc.next();
+                    //TODO LATER validar cpf do usuário, não está validando
+                    //System.out.print("Digite o cpf do destinatário: ");
+                    //String cpf = sc.next();
                     System.out.print("Digite o nome do destinatário: ");
                     String name = sc.next();
                     Account destination = bank.getAccount(name);
@@ -160,7 +160,24 @@ public class Program {
                     }
                     break;
                 case 6:
-                    //adicionar limite cheque especial
+                    if (account instanceof CheckingAccount) {
+                        System.out.println("Solicite um valor maior de cheque especial");
+                        System.out.printf("Seu valor atual é %.2f%n",
+                                ((CheckingAccount) account).getOverdraft());
+                        System.out.print("Novo valor: ");
+                        double newOverdraft = sc.nextDouble();
+                        System.out.println("Simulação gerente aprovando e digitando a senha ...");
+                        System.out.print("Digite a senha gerente: ");
+                        String password = sc.next();
+                        try {
+                            ((CheckingAccount) account).setOverdraft(newOverdraft, password);
+                        } catch (Exception e) {
+                            System.out.println(e.getMessage());
+                        }
+                    } else {
+                        System.out.println("Função indisponível para conta poupança");
+                    }
+                    break;
                 case 7:
                     System.out.println("Tem certeza que deseja encerrar a conta [s/n]?");
                     char response = sc.next().toLowerCase().charAt(0);

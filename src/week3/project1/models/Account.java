@@ -5,6 +5,7 @@ import java.util.UUID;
 
 public abstract class Account {
     private Client client;
+    protected Manager manager;
     protected Double balance = 0.0;
     private final UUID uuid;
     protected Statement statement = new Statement();
@@ -14,6 +15,7 @@ public abstract class Account {
         setClient(client);
         deposit(amount);
         uuid = UUID.randomUUID();
+        manager = new Manager("King", "default");
     }
 
     public Client getClient() {
