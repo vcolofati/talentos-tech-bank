@@ -1,14 +1,16 @@
 package week3.project1.models;
 
+import com.sun.org.apache.xpath.internal.functions.WrongNumberArgsException;
+
 import java.util.Objects;
 import java.util.UUID;
 
 public abstract class Account {
     private Client client;
-    private Double balance = 0.0;
+    protected Double balance = 0.0;
     private UUID uuid;
 
-    public Account(Client client, Double amount) {
+    public Account(Client client, Double amount) throws Exception {
         setClient(client);
         deposit(amount);
         uuid = UUID.randomUUID();
@@ -27,18 +29,27 @@ public abstract class Account {
         return balance;
     }
 
-    public void deposit(Double amount) {
-        this.balance+= amount;
+    public void deposit(Double amount) throws Exception {
+        if (amount <= 0) {
+            throw new Exception("Valor deve ser maior que zero");
+        }
+        this.balance += amount;
     }
 
     public void withdraw(Double amount) throws Exception {
+        if (amount <= 0) {
+            throw new Exception("Valor deve ser maior que zero");
+        }
         if (this.getBalance() < amount) {
             throw new Exception("Seu saldo não é suficiente");
         }
-        this.balance-= amount;
+        this.balance -= amount;
     }
 
     public void transfer(Double amount, Account destination) throws Exception {
+        if (amount <= 0) {
+            throw new Exception("Valor deve ser maior que zero");
+        }
         if (this.getBalance() < amount) {
             throw new Exception("Saldo insuficiente");
         }
@@ -61,11 +72,11 @@ public abstract class Account {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         Account account = (Account) o;
-        return uuid.equals(account.uuid);
+        return getClient().equals(account.getClient());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(uuid);
+        return Objects.hash(getClient());
     }
 }
