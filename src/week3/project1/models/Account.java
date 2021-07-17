@@ -1,21 +1,33 @@
 package week3.project1.models;
 
 import java.util.Objects;
-import java.util.UUID;
-
+import java.util.Random;
 public abstract class Account {
     private Client client;
     protected Manager manager;
     protected Double balance = 0.0;
-    private final UUID uuid;
+    private final int accountId;
+    private String userPassword;
     protected Statement statement = new Statement();
 
 
-    public Account(Client client, Double amount) throws Exception {
+    public Account(Client client, Double amount, String userPassword) throws Exception {
         setClient(client);
         deposit(amount);
-        uuid = UUID.randomUUID();
+        accountId = new Random().nextInt(10000);
+        this.userPassword = userPassword;
         manager = new Manager("King", "default");
+    }
+
+    public Account(Client client, String userPassword) throws Exception {
+        setClient(client);
+        accountId = new Random().nextInt(10000);
+        this.userPassword = userPassword;
+        manager = new Manager("King", "default");
+    }
+
+    public int getAccountId() {
+        return accountId;
     }
 
     public Client getClient() {
@@ -74,7 +86,7 @@ public abstract class Account {
         return "Account{" +
                 "clientName='" + client.getName() + '\'' +
                 ", balance=" + balance +
-                ", uuid=" + uuid +
+                ", uuid=" + accountId +
                 '}';
     }
 

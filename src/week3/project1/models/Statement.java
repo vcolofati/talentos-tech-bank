@@ -26,7 +26,4 @@ public class Statement {
         });
         System.out.println("***********************************************");
     }
-
-    //não vou implementar pra remover transação, porque não foi pedido, e no programa não tem opção de dar rollback
-    //em uma transação
 }

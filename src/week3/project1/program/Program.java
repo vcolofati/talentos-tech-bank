@@ -1,4 +1,4 @@
-package week3.project1;
+package week3.project1.program;
 
 import week3.project1.models.*;
 
@@ -7,39 +7,34 @@ import java.util.Scanner;
 
 public class Program {
     public static void main(String[] args) {
-        // Criar conta - perguntar nome cliente, saldo inicial, tipo de conta e id aleatório de 4 digitos
         Locale.setDefault(new Locale("pt", "BR"));
         Bank bank = new Bank();
         mainMenu(bank);
+    }
 
-        //Ao terminar de preencher os dados de abertura da conta, o programa deverá mostrar um menu com as seguintes
-        //opções;
-        // * Listar
-        // * Realizar Saque
-        // * Depositar;
-        // * Adicionar limite de cheque especial ( Deve pedir a senha do gerente)
-
-        //Encerrar conta (Ao encerrar a conta, o usuário deve realizar o saque de
-        //todo o valor restante na conta e não pode estar devendo nada no cheque especial).
+    public static int getUserInput(Scanner sc) {
+        if (!sc.hasNextInt()) {
+            sc.next();
+            return -1;
+        }
+        return sc.nextInt();
     }
 
     public static void mainMenu(Bank bank) {
+
         Scanner sc = new Scanner(System.in);
         boolean isRunning = true;
+
         do {
-            System.out.printf("================== Coders Bank ==================%n%n");
-            System.out.println("Para cadastrar uma nova conta, digite 1.");
-            System.out.println("Para acessar uma conta, digite 2.");
-            System.out.println("Para sair, digite 3.");
+            System.out.println("================== Coders Bank ==================");
+            System.out.println("[1] Cadastrar uma nova conta");
+            System.out.println("[2] Acessar uma conta");
+            System.out.println("[3] Sair");
+            System.out.println("=================================================");
             System.out.print("Opção: ");
-            if (!sc.hasNextInt()) {
-                System.out.println("Comando inválido");
-                sc.next();
-                continue;
-            }
-            int resp = sc.nextInt();
-            switch (resp) {
+            switch (getUserInput(sc)) {
                 case 1:
+                    // Cadastrar Conta
                     System.out.print("Digite o nome do cliente: ");
                     sc.nextLine();
                     String clientName = sc.nextLine().trim();
@@ -47,71 +42,80 @@ public class Program {
                     String cpf = sc.nextLine().trim();
                     System.out.print("Digite a profissão do cliente: ");
                     String occupation = sc.nextLine().trim();
-                    System.out.print("Conta corrente (CC) ou Conta Poupança (CP)? ");
-                    String accountType;
-                    if (sc.hasNext("C[C|P]")) {
-                        accountType = sc.next();
-                    } else {
-                        System.out.println("Erro comando inválido");
-                        sc.next();
-                        continue;
-                    }
-                    System.out.print("Digite o depósito inicial: ");
-                    double initialDeposit = sc.nextDouble();
                     Client client = new Client(clientName, cpf, occupation);
-                    if (accountType.equals("CC")) {
-                        try {
-                            bank.addAccount(new CheckingAccount(client, initialDeposit, 300.0));
+                    System.out.println("[1] Conta Corrente");
+                    System.out.println("[2] Conta Poupança");
+                    int accountType = getUserInput(sc);
+                    Account account;
+                    String password;
+                    double initialDeposit;
+                    try {
+                        switch (accountType) {
+                            case 1:
+                                System.out.print("Digite uma senha para sua conta: ");
+                                password = sc.next();
+                                System.out.print("Digite o depósito inicial: ");
+                                initialDeposit = sc.nextDouble();
+                                account = new CheckingAccount(client, initialDeposit, password,
+                                        300.0);
+                                System.out.printf("Sua conta corrente é a %d%n", account.getAccountId());
+                                bank.addAccount(account);
 
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
+                                break;
+                            case 2:
+                                System.out.print("Digite uma senha para sua conta: ");
+                                password = sc.next();
+                                System.out.print("Digite o depósito inicial: ");
+                                initialDeposit = sc.nextDouble();
+                                account = new SavingsAccount(client, initialDeposit, password);
+                                System.out.printf("Sua conta poupança é a %d%n", account.getAccountId());
+                                bank.addAccount(account);
+                                break;
+                            default:
+                                System.out.println("Comando inválido");
+                                break;
                         }
-
-                    } else {
-                        try {
-                            bank.addAccount(new SavingsAccount(client, initialDeposit));
-                        } catch (Exception e) {
-                            System.out.println(e.getMessage());
-                        }
+                    } catch (Exception e) {
+                        e.printStackTrace();
                     }
                     break;
                 case 2:
                     // Acessar conta
-                    clientMenu(bank);
+                    clientMenu(bank, sc);
                     break;
                 case 3:
+                    // Encerra programa
                     isRunning = false;
                     break;
                 default:
                     System.out.println("Comando inválido");
+                    break;
             }
         } while (isRunning);
         sc.close();
     }
 
-    public static void clientMenu(Bank bank) {
-        Scanner sc = new Scanner(System.in);
-        System.out.print("Digite seu nome completo: ");
-        String clientName = sc.nextLine().trim();
-        if (bank.getAccount(clientName) == null) {
+    public static void clientMenu(Bank bank, Scanner sc) {
+        boolean isRunning = true;
+        System.out.print("Digite o número da conta: ");
+        int accountId = getUserInput(sc);
+        if (bank.getAccount(accountId) == null) {
             System.out.println("Conta não existente");
             return;
         }
-        Account account = bank.getAccount(clientName);
+        Account account = bank.getAccount(accountId);
         System.out.printf("Bem vindo(a) %s%n", account.getClient().getName());
         System.out.println();
-        int resp;
         do {
-            System.out.println("Para consultar seu saldo, digite 1.");
-            System.out.println("Para listar seu extrato, digite 2.");
-            System.out.println("Para realizar saque, digite 3.");
-            System.out.println("Para realizar depósito, digite 4.");
-            System.out.println("Para efetuar uma transferência, digite 5.");
-            System.out.println("Para adicionar limite de cheque especial, digite 6.");
-            System.out.println("Para encerrar sua conta, digite 7.");
-            System.out.println("Para voltar, digite 0.");
-            resp = sc.nextInt();
-            switch (resp) {
+            System.out.println("[1] Consultar saldo");
+            System.out.println("[2] Listar extrato");
+            System.out.println("[3] Realizar saque");
+            System.out.println("[4] Realizar depósito");
+            System.out.println("[5] Efetuar uma transferência");
+            System.out.println("[6] Adicionar limite de cheque especial");
+            System.out.println("[7] Encerrar conta");
+            System.out.println("[8] Voltar");
+            switch (getUserInput(sc)) {
                 case 1:
                     // saldo
                     System.out.printf("Seu saldo é R$ %.2f%n", account.getBalance());
@@ -146,9 +150,9 @@ public class Program {
                     //TODO LATER validar cpf do usuário, não está validando
                     //System.out.print("Digite o cpf do destinatário: ");
                     //String cpf = sc.next();
-                    System.out.print("Digite o nome do destinatário: ");
-                    String name = sc.next();
-                    Account destination = bank.getAccount(name);
+                    System.out.print("Digite o número da conta que deseja transferir: ");
+                    int userAccountId = sc.nextInt();
+                    Account destination = bank.getAccount(userAccountId);
                     System.out.print("Digite o valor para transferir: ");
 
                     //TODO checar se existe destinatário
@@ -182,14 +186,14 @@ public class Program {
                     System.out.println("Tem certeza que deseja encerrar a conta [s/n]?");
                     char response = sc.next().toLowerCase().charAt(0);
                     if (response == 's') {
-                        int res = bank.deleteAccount(clientName);
+                        int res = bank.deleteAccount(accountId);
                         if (res == 1) {
                             System.out.println("Você deve sacar todo dinheiro antes de encerrar a conta");
                         } else if (res == -1) {
                             System.out.println("Verifique débitos pendentes com a instituição.");
                         } else {
                             System.out.println("Conta encerrada com sucesso.");
-                            resp = 0;
+                            isRunning = false;
                         }
                     } else if (response == 'n') {
                         System.out.println("Obrigado por manter sua conta!");
@@ -198,9 +202,9 @@ public class Program {
                     }
                     break;
                 default:
-                    System.out.println("Saindo");
+                    isRunning = false;
                     break;
             }
-        } while (resp != 0);
+        } while (isRunning);
     }
 }

@@ -4,8 +4,8 @@ public class CheckingAccount extends Account {
 
     Double overdraft;
 
-    public CheckingAccount(Client client, Double amount, Double overdraft) throws Exception {
-        super(client, amount);
+    public CheckingAccount(Client client, Double amount, String userPassword, Double overdraft) throws Exception {
+        super(client, amount, userPassword);
         this.overdraft = overdraft;
     }
 
@@ -17,15 +17,13 @@ public class CheckingAccount extends Account {
         if (overdraft <= 0) {
             throw new Exception("Valor deve ser maior que zero");
         }
-        if(overdraft < this.overdraft) {
+        if (overdraft < this.overdraft) {
             throw new Exception("Valor deve ser maior que limite atual");
         }
-        if (password.equals(this.manager.getPassword())) {
-            this.overdraft = overdraft;
-            System.out.printf("Limite cheque especial aumentado para R$ %.2f%n", this.overdraft);
-        } else {
-            System.out.println("Erro senha inválida");
+        if (!password.equals(this.manager.getPassword())) {
+            return;
         }
+        this.overdraft = overdraft;
     }
 
     @Override
@@ -36,11 +34,11 @@ public class CheckingAccount extends Account {
         }
         if (this.getBalance() + this.getOverdraft() < amount) {
             throw new Exception("Seu saldo não é suficiente");
-        } else {
-            this.balance -= amount;
-            this.overdraft -= Math.abs(this.balance);
-            this.statement.addTransaction(-amount);
         }
+        this.balance -= amount;
+        this.overdraft -= Math.abs(this.balance);
+        this.statement.addTransaction(-amount);
+        
     }
 
     @Override

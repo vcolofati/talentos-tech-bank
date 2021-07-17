@@ -19,23 +19,23 @@ public class Bank {
         }
     }
 
-    public Account getAccount(String name) {
+    public Account getAccount(Integer userId) {
         // tratar null pointer Exception
         for (int i = 0; i < this.accounts.size(); i++) {
-            if (this.accounts.get(i).getClient().getName().equals(name)) {
+            if (this.accounts.get(i).getAccountId() == userId) {
                 return this.accounts.get(i);
             }
         }
         return null;
     }
 
-    public Integer deleteAccount(String name) {
-        if (getAccount(name).getBalance() > 0) {
+    public Integer deleteAccount(Integer userId) {
+        if (getAccount(userId).getBalance() > 0) {
             return 1;
-        } else if (getAccount(name).getBalance() < 0) {
+        } else if (getAccount(userId).getBalance() < 0) {
             return -1;
-        } else if (getAccount(name).getBalance() == 0) {
-            Account account = getAccount(name);
+        } else if (getAccount(userId).getBalance() == 0) {
+            Account account = getAccount(userId);
             accounts.remove(account);
         }
         return 0;
