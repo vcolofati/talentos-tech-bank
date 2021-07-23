@@ -1,4 +1,4 @@
 .idea
 out
 /talentos-tech-bank.iml
-week4/jdbc/Credentials.java
+src/week4/jdbc/Credentials.java
